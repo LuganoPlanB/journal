@@ -11,7 +11,9 @@ cd journalSite
 hugo server -D
 ```
 
-Open the local address printed by Hugo. The draft sample shows an issue, its table of contents, an article, and the issue’s JSON export. Run `hugo server` to preview published issues only. The starter builds with Hugo’s standard binary and Go.
+Open the local address printed by Hugo. The public sample issue shows a table of contents, two fictional articles, a sample PDF and the issue’s JSON export. Its `example: true` flag labels the preview and excludes its articles from the publication feed and text indexes. Real issues take precedence on the homepage. Set `draft: true` on any issue to restrict it to a local `hugo server -D` build.
+
+The homepage links to the editorial board, contributor and partner directories, journal club schedule, posters and materials, news, and information about the journal. Replace the labeled placeholders in `journalSite/content/{people,journal-club,news,about}/` as editorial content becomes available. Remove the sample issue entry from `data/issues.yaml` to retire the public issue preview.
 
 In `journalSite/hugo.toml`, set `params.hotcrpURL` to your public HotCRP submission URL to enable the submission links. Edit `journalSite/content/authors.md` to supply author guidelines.
 

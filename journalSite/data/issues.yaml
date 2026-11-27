@@ -1,4 +1,4 @@
-# Order issues newest first. Draft examples appear with hugo server -D.
+# Order published issues newest first. The example is a public layout specimen.
 - key: sample
   title: Sample issue
-  draft: true
+  example: true

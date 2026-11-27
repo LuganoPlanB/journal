@@ -3,7 +3,7 @@
     <title>{{ site.Title }}</title><link>{{ .Permalink }}</link>
     <description>{{ site.Params.description }}</description>
     <atom:link href="{{ (.OutputFormats.Get "rss").Permalink }}" rel="self" type="application/rss+xml"/>
-    {{ with site.GetPage "/issues" }}{{ range .Sections.ByWeight }}{{ range .RegularPages.ByWeight }}
+    {{ with site.GetPage "/issues" }}{{ range where .Sections.ByWeight "Params.example" "ne" true }}{{ range .RegularPages.ByWeight }}
     <item>
       <title>{{ .Title }}</title><link>{{ .Permalink }}</link><guid>{{ .Permalink }}</guid>
       <description>{{ .Description }}</description>
