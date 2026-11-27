@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.Locale | default "en" }}">
-{{ partial "head.html" . }}
+{{ if site.Params.journal }}{{ partial "journal/head.html" . }}{{ else }}{{ partial "head.html" . }}{{ end }}
 
 {{/* Getting this class correct is crucial for many CSS formatting to function properly */}}
 <body class="{{ .Kind }} 
@@ -13,10 +13,11 @@
 ">
 
 {{ block "header" . }}
-  {{ partial "header.html" . }}
+  {{ if site.Params.journal }}{{ partial "journal/header.html" . }}{{ else }}{{ partial "header.html" . }}{{ end }}
 {{ end }}
 
-<main>
+<main id="main-content">
+  {{ if not site.Params.journal }}
   {{ block "banner" . }}
     {{/* The year of the page: its section, or params.currentYear for pages outside a year (tags, ...).
          The banner is [params.YEAR.logos] banner; without one, the IAQI stand-in is shown. */}}
@@ -31,16 +32,19 @@
     </div>
   {{ end }}
 
+  {{ end }}
 	{{ block "main" . }}
     {{ printf "<!-- Missing main block! -->" | safeHTML }}
 	{{ end }}
 </main>
 
 {{ block "footer.html" . }}
-  {{ partial "footer.html" . }}
+  {{ if site.Params.journal }}
+    <footer class="journal-footer"><span>{{ site.Title }}</span>{{ with site.Home.OutputFormats.Get "RSS" }}<a href="{{ .RelPermalink }}">RSS feed</a>{{ end }}</footer>
+  {{ else }}{{ partial "footer.html" . }}{{ end }}
 {{ end }}
 
-{{ partial "js.html" . }}{{ partialCached "placeholders.html" . }}
+{{ if not site.Params.journal }}{{ partial "js.html" . }}{{ partialCached "placeholders.html" . }}{{ end }}
 
 {{ block "scripts" . }}
   {{ printf "<!-- No extra scripts -->" | safeHTML }}

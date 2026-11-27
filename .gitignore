@@ -4,3 +4,7 @@ __pycache__/
 
 # Claude Code local state
 .claude/
+private_data/
+public/
+resources/
+.hugo_build.lock

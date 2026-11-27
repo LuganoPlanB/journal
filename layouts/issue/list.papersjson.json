@@ -1,0 +1,5 @@
+{{- $articles := slice -}}
+{{- range .RegularPages.ByWeight -}}
+  {{- $articles = $articles | append (merge .Params.record (dict "url" .Permalink)) -}}
+{{- end -}}
+{{- dict "journal" site.Title "issue" .Title "articles" $articles | jsonify -}}

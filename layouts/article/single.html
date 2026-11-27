@@ -1,0 +1,28 @@
+{{ define "main" }}
+<article id="paper-{{ .Params.record.pid }}">
+  <a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a>
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.record.authors }}
+    <ul class="byline">{{ range . }}<li>{{ .name }}{{ with .affiliation }} <span>({{ . }})</span>{{ end }}</li>{{ end }}</ul>
+  {{ end }}
+  {{ $r := .Params.record }}
+  {{ with $r.abstract }}<h2>Abstract</h2><p class="abstract">{{ . }}</p>{{ end }}
+  <div class="article-links">
+    {{ $pdf := printf "articles/%s/%d.pdf" .Params.issueKey (int $r.pid) }}
+    {{ with resources.Get $pdf }}<a class="submit" href="{{ .RelPermalink }}">Read article (PDF)</a>{{ end }}
+    {{ with $r.doi }}<a href="https://doi.org/{{ . }}">DOI {{ . }}</a>{{ end }}
+    {{ range $r.arxiv }}<a href="https://arxiv.org/abs/{{ . }}">arXiv {{ . }}</a>{{ end }}
+    {{ with $r.video }}<a href="{{ . }}">Watch recording</a>{{ end }}
+    {{ $issue := .Params.issueKey }}
+    {{ with index (partialCached "program/session-index.html" $issue $issue) (string $r.pid) }}
+      <a href="{{ .page.RelPermalink }}#paper-{{ $r.pid }}">{{ .page.Title }}</a>
+    {{ end }}
+    {{ with partial "program/slides.html" (dict "year" $issue "pid" $r.pid) }}<a href="{{ strings.TrimPrefix "/" . | relURL }}">Slides</a>{{ end }}
+    {{ $extended := printf "%s/extended_abstracts/%d_ext_abst.pdf" $issue (int $r.pid) }}
+    {{ if fileExists (printf "content/%s" $extended) }}<a href="{{ $extended | relURL }}">Extended abstract</a>{{ end }}
+    {{ range $r.mergedwith }}
+      {{ with $.Parent.GetPage (string .) }}<a href="{{ .RelPermalink }}">Related article · {{ .Title }}</a>{{ end }}
+    {{ end }}
+  </div>
+</article>
+{{ end }}

@@ -3,7 +3,7 @@
 A small, fictional conference website built on
 [conference-theme](https://github.com/IAQI/conference-theme). All people,
 papers and places are made up. Copy this folder to start a new site; see the
-theme's README, "Using the theme for your conference".
+fork's [upstream program guide](../CONFERENCE.md). The [journal starter](../journalSite/) is the entry point for Plan-B Journal.
 
 To run it inside the theme's repository:
 

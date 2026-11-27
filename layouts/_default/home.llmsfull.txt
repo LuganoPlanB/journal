@@ -1,6 +1,7 @@
 {{- /* /llms-full.txt: llms.txt followed by the text of the current year's
      pages, for agents that want everything in one request. Session pages are
      left out: the program data (program.json) has them. */ -}}
+{{- if site.Params.journal }}{{ partial "journal/llms.txt" (dict "full" true) }}{{ else }}
 {{- partial "agents/llms.html" . }}
 
 {{ $year := string site.Params.currentYear -}}
@@ -14,4 +15,5 @@ URL: {{ .Permalink }}
 
 {{ trim .Plain " \n" | htmlUnescape }}
 {{ end -}}
+{{- end -}}
 {{- end -}}
