@@ -1,0 +1,14 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.Title }}</title><link>{{ .Permalink }}</link>
+    <description>{{ site.Params.description }}</description>
+    <atom:link href="{{ (.OutputFormats.Get "rss").Permalink }}" rel="self" type="application/rss+xml"/>
+    {{ with site.GetPage "/issues" }}{{ range .Sections.ByWeight }}{{ range .RegularPages.ByWeight }}
+    <item>
+      <title>{{ .Title }}</title><link>{{ .Permalink }}</link><guid>{{ .Permalink }}</guid>
+      <description>{{ .Description }}</description>
+      {{ if not .Date.IsZero }}<pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" }}</pubDate>{{ end }}
+    </item>
+    {{ end }}{{ end }}{{ end }}
+  </channel>
+</rss>

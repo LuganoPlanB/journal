@@ -45,3 +45,5 @@ jobs:
           # fail on errors and on warnings, except the expected stand-in one
           hugo --logLevel warn 2>&1 | tee build.log
           ! grep -E '^(ERROR|WARN)' build.log | grep -v 'stand-in images'
+      - name: Check journal publishing
+        run: python3 -m unittest discover -s integration -v

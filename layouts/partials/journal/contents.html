@@ -1,0 +1,7 @@
+<ul class="contents">
+  {{ range .RegularPages.ByWeight }}
+    <li id="paper-{{ .Params.record.pid }}"><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      {{ with .Params.record.authors }}<p>{{ delimit (apply . "index" "." "name") ", " }}</p>{{ end }}
+    </li>
+  {{ else }}<li>No articles have been published in this issue.</li>{{ end }}
+</ul>

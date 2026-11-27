@@ -1,0 +1,7 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>{{ .Content }}
+  <ul class="contents">
+    {{ range .Sections.ByWeight }}<li><h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2><p>{{ len .RegularPages }} {{ cond (eq (len .RegularPages) 1) "article" "articles" }}</p></li>
+    {{ else }}<li>The first issue will appear here when it is published.</li>{{ end }}
+  </ul>
+{{ end }}

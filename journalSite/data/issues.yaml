@@ -1,0 +1,4 @@
+# Order issues newest first. Draft examples appear with hugo server -D.
+- key: sample
+  title: Sample issue
+  draft: true

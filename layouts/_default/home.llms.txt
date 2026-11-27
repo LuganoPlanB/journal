@@ -1,1 +1,1 @@
-{{- partial "agents/llms.html" . }}
+{{- if site.Params.journal }}{{ partial "journal/llms.txt" (dict "full" false) }}{{ else }}{{ partial "agents/llms.html" . }}{{ end }}

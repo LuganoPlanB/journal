@@ -1,0 +1,12 @@
+# {{ site.Title }}
+
+{{ site.Params.description }}
+{{ with site.GetPage "/issues" }}
+{{ range .Sections.ByWeight }}
+## {{ .Title }}
+
+{{ .Permalink }}
+{{ range .RegularPages.ByWeight }}
+- {{ .Title }} · {{ .Permalink }}
+{{ if $.full }}{{ with .Description }}{{ . }}
+{{ end }}{{ end }}{{ end }}{{ end }}{{ end }}

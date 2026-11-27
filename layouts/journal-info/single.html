@@ -1,0 +1,5 @@
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>{{ .Content }}
+  {{ with site.Params.hotcrpURL }}<p><a class="submit" href="{{ . }}">Open HotCRP</a></p>
+  {{ else }}<p>The submission link will appear here when it is available.</p>{{ end }}
+{{ end }}

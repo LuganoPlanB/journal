@@ -1,0 +1,27 @@
+baseURL = "https://example.org/"
+title = "Plan-B Journal"
+locale = "en"
+enableRobotsTXT = true
+disableKinds = ["taxonomy", "term"]
+
+[module]
+  replacements = "github.com/LuganoPlanB/journal-theme -> ../.."
+  [[module.imports]]
+    path = "github.com/LuganoPlanB/journal-theme"
+
+[params]
+  journal = true
+  description = "Articles and issues of the Plan-B Journal."
+  # hotcrpURL = "https://your-submission-server.example/"
+
+[outputs]
+  home = ["html", "rss", "llms", "llmsfull"]
+
+[[menus.main]]
+  name = "Issues"
+  pageRef = "/issues"
+  weight = 10
+[[menus.main]]
+  name = "For authors"
+  pageRef = "/authors"
+  weight = 20

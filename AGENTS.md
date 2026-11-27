@@ -1,4 +1,15 @@
-# AGENTS.md: conference-theme
+# AGENTS.md: journal-theme
+
+This fork publishes the Plan-B Journal. Start with README.md and journalSite/.
+Use synthetic HotCRP exports for tests. Check the script suite, the publishing
+integration tests, and the inherited exampleSite fixture before proposing a change.
+Keep changes on a branch, open the pull request in LuganoPlanB/journal-theme,
+and leave merging to a maintainer.
+
+## Upstream maintenance notes
+
+The notes below describe work in IAQI/conference-theme and its three consuming
+sites. They are relevant when porting changes back to that project.
 
 Instructions for AI coding assistants (Claude Code, Codex, Cursor, Copilot, ...)
 working on this module, and a checklist for the humans supervising them.

@@ -1,0 +1,13 @@
+{{ define "main" }}
+  <div class="masthead"><h1>{{ site.Title }}</h1>{{ .Content }}</div>
+  {{ with site.GetPage "/issues" }}
+    {{ range first 1 .Sections.ByWeight }}
+      <section aria-labelledby="current-issue"><p class="kicker">Current issue</p>
+        <h2 id="current-issue"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        {{ partial "journal/contents.html" . }}
+      </section>
+    {{ else }}
+      <section><h2>Issues</h2><p>The first issue will appear here when it is published.</p></section>
+    {{ end }}
+  {{ end }}
+{{ end }}

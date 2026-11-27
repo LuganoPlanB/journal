@@ -1,320 +1,64 @@
-# conference-theme
+# Plan-B Journal
 
-The shared theme of the [QCrypt](https://github.com/IAQI/qcrypt-website),
-[TQC](https://github.com/IAQI/tqc-website) and
-[QIP](https://github.com/IAQI/qip-website) websites: the layouts and styles of
-all pages, the schedule, session and accepted-papers templates, and the scripts
-that take a conference from the HotCRP list of accepted papers to a fully
-linked schedule and from one year to the next. It is a
-[Hugo module](https://gohugo.io/hugo-modules/); each website imports it and
-keeps only its content, data, settings, colours, logos and the few files it
-deliberately does differently.
+A Hugo theme and starter for publishing journal issues from HotCRP. Editors export publication-ready manuscripts, readers browse issues and articles, and authors follow the submission link to the journal’s existing HotCRP installation.
 
-**[docs/website-guide.md](docs/website-guide.md)** explains how to work on
-one of the websites: running it locally, how the content is organised, menus,
-footer, home page, team, speakers, setting up a new year, colours. This README
-covers the program part.
+## Preview the journal
 
-For the program, everything is keyed by the **HotCRP paper id** (`pid`). Here is what the
-websites get from that:
+Install Hugo 0.170.0 or later and Go. From the root of this checkout, run:
 
-- **Schedule.** Each card shows its papers with their authors, the presenting
-  author highlighted, the room, and a ▶ Video link once recordings are up.
-  Sessions that start at the same time are shown side by side.
-- **Session pages.** Each shows the full paper entries (abstract, arXiv,
-  extended abstract, proceedings, slides), the chair, the speakers, and the
-  embedded recordings.
-- **Accepted papers.** Every paper has the anchor `#paper-<pid>` and links to
-  the slot where it is presented and to its recording.
+```sh
+cd journalSite
+hugo server -D
+```
 
-## Using the theme for your conference
+Open the local address printed by Hugo. The draft sample shows an issue, its table of contents, an article, and the issue’s JSON export. Run `hugo server` to preview published issues only. The starter builds with Hugo’s standard binary and Go.
 
-The theme is not tied to QCrypt, TQC or QIP: any conference can use it
-([MIT license](LICENSE)). Its defaults carry neutral IAQI branding (stand-in
-images and the IAQI maroon), which you replace with your own.
+In `journalSite/hugo.toml`, set `baseURL` to the public journal URL (include any subdirectory and trailing slash). Set `params.hotcrpURL` to your public HotCRP submission URL to enable the submission links. Edit `content/authors.md` to supply author guidelines.
 
-1. **Install** [Hugo](https://gohugo.io/installation/) 0.170.0 or later,
-   [Dart Sass](https://gohugo.io/functions/css/sass/#dart-sass),
-   [Go](https://go.dev/dl/) (Hugo downloads the theme with it) and Node.js
-   (for PostCSS), e.g. `brew install hugo go sass/sass/sass node`.
-2. **Start from the example site:** copy [`exampleSite/`](exampleSite/) to a
-   new repository, delete the `replacements = ...` line in its `hugo.toml`,
-   then run
+## Publish an issue
+
+1. In HotCRP, export paper information as JSON for manuscripts cleared for public release. Keep the raw export outside the public repository or in the ignored `private_data/` directory. Drafts committed to a public repository are visible on GitHub.
+2. From `journalSite/`, filter by the **exact decision label used by your editors**. For an installation whose decision is “Accept”, this command creates the public data file:
+
    ```sh
-   go get github.com/IAQI/conference-theme@v0.1.0   # or a later release
-   npm install
-   hugo server
+   python3 ../scripts/sanitize_hotcrp_json.py private_data/export.json \
+     --decision '^Accept$' -o data/accepted-papers-vol-1-issue-1.json
    ```
-   It is a small fictional conference (made-up people and papers) with the
-   pages and data files a site needs: home page, schedule, session pages,
-   accepted papers and posters, speakers, committees, sponsors, charter,
-   history and code of conduct.
-3. **Make it yours:** rename the conference in `hugo.toml` (`title`,
-   `[params]`, `[params.YEAR.event]`), your colour in
-   `assets/style/theme-YEAR.scss`, your logos under `[params.YEAR.logos]`
-   (until then the IAQI stand-ins are shown, with a build warning), and the
-   texts in `content/YEAR/`. The [website guide](docs/website-guide.md) explains
-   each part; the rest of this README covers the program pipeline from HotCRP.
-4. **Updating:** releases are listed in [CHANGELOG.md](CHANGELOG.md). Update
-   with `go get github.com/IAQI/conference-theme@vX.Y.Z` and commit `go.mod`
-   and `go.sum`. Any file of the theme can be replaced by putting your own
-   copy at the same path in your site (`layouts/`, `assets/`, `i18n/`, also
-   `assets/images/placeholder/` for the stand-ins).
 
-Parts that only work for the IAQI conferences: `scripts/quantumdb_presenters.py`
-(QuantumDB has only QIP, QCrypt and TQC), the title clean-up in
-`scripts/fetch_videos.py` (QCrypt/TQC/QIP video titles), and the stand-in
-colour that `scripts/new_year.py` puts into a new year. The HotCRP pipeline
-(`sanitize_hotcrp_json.py`, `generate_schedule.py`, `mark_presenters.py`)
-works for any conference that uses HotCRP.
+   Compare the reported count with HotCRP and review the output before publishing. The sanitizer retains titles, abstracts, author names and affiliations, and supported public metadata. Emails, reviews, conflicts and decision text are excluded by default.
+3. Add the issue at the top of `data/issues.yaml`. The key matches the export filename and forms part of the public URL. Keep it stable. For example:
 
-## Contents
+   ```yaml
+   - key: vol-1-issue-1
+     title: Volume 1, Issue 1
+     draft: true
+   ```
 
-| path | what |
-|---|---|
-| `layouts/` | all page layouts and shortcodes (home page blocks, team, partners, speakers, text pages, header, footer, ...) |
-| `layouts/schedule/list.html`, `layouts/sessions/single.html` | the schedule page (`type: schedule`) and a session page (`type: sessions`) |
-| `layouts/partials/schedule-session.html`, `paper*.html`, `location.html`, `program/*.html` | schedule cards, paper entries and their helpers (year, videos, slides, paper → session index, merged papers, edition facts, session/paper records for the exports) |
-| `layouts/partials/agents/`, `layouts/_default/home.llms*.txt`, `layouts/schedule/list.*.json`, `list.programics.ics`, `layouts/robots.txt` | information for AI agents: JSON-LD, `/llms.txt`, the program exports, robots.txt (see "Using the module in a site") |
-| `layouts/shortcodes/papers-accepted.html`, `posters-accepted.html`, `code-of-conduct.html`, `home-*.html`, ... | the shortcodes used in content pages |
-| `assets/style/_theme.scss` | the whole stylesheet; a site's `theme-YEAR.scss` starts with `@use "theme";` |
-| `assets/style/_program.scss`, `partials/`, `pages/` | the styles, by part of the site |
-| `assets/script/`, `assets/icons/` | scripts and icons |
-| `archetypes/`, `i18n/en.toml` | page templates for `hugo new`, interface texts |
-| `scripts/` | the pipeline scripts below and `new_year.py` (Python 3, `pip install -r requirements.txt`); `archive_year.py` and `archive_discovery.py` for the static archives (standard library only; see the guide, "Archiving a year") |
-| `assets/images/placeholder/` | IAQI stand-ins for a new year's images (see the guide, "Stand-in images"), published at `/images/placeholder/` by `layouts/partials/placeholders.html`. They are assets rather than static files because Hugo copies a module's static files read-only, which breaks the next build into the same `public/`. Copied from `placeholders/` of [IAQI/iaqi-brand](https://github.com/IAQI/iaqi-brand), where `tools/placeholders.py` makes them; change them there and copy them over. |
-| `docs/` | [website-guide.md](docs/website-guide.md) (working on a site), [theme-reference.md](docs/theme-reference.md) (the original theme's blocks) |
+   An optional `date` in `YYYY-MM-DD` format is displayed as the issue publication date. Articles appear in export order. HotCRP IDs are scoped to the issue, so two issues can have an article numbered 1.
+4. To publish a full-text PDF, put the editor-approved file in `assets/articles/vol-1-issue-1/<pid>.pdf`. For DOIs, add an optional `data/proceedings-vol-1-issue-1.yml` mapping quoted paper IDs to DOI strings. Imported arXiv IDs, related paper IDs and optional recordings become article links.
+5. Preview with `hugo server -D`. Set `draft: false` when the issue is ready. From `journalSite/`, build **into a fresh directory** and deploy its contents to the journal’s public web root:
 
-A site keeps its own `assets/style/theme-YEAR.scss` (colours), logos and
-favicons, and can override any single file of this module by putting its own
-copy at the same path in its `layouts/`, `assets/` or `i18n/` folder.
+   ```sh
+   output=$(mktemp -d)
+   hugo --destination "$output"
+   ```
 
-## Data files (per site, per year)
+   The result is a static site. Serve it alongside HotCRP with a separate document root or a dedicated URL path. Only the generated output belongs in the public web root.
 
-| file | written by | content |
-|---|---|---|
-| `data/accepted-papers-YEAR.json` | `sanitize_hotcrp_json.py` | accepted talks: `pid, title, abstract, authors[{first,last,affiliation}], mergedwith?, options{arxiv-id?, talk-type?}` |
-| `data/posters-YEAR.json` | `sanitize_hotcrp_json.py` | accepted posters, same format |
-| `data/schedule-YEAR.yml` | `generate_schedule.py` | days → slots `{session, time, end?, location?}` |
-| `data/locations-YEAR.yml` | `generate_schedule.py`, then by hand | rooms `{key, label, description?}` |
-| `content/YEAR/sessions/<key>.md` | `generate_schedule.py`, then by hand | one page per session: `title, format, tags, chair, papers[pids], speakers[keys], note`, plus a free text body |
-| `data/presenters-YEAR.yml` | `mark_presenters.py` | `"pid": ["First Last"]`, the presenting author(s) |
-| `data/presenters-overrides-YEAR.yml` | by hand | corrections to the above |
-| `data/videos-YEAR.yml` | `fetch_videos.py` | `papers: {"pid": {id, presenter?}}`, `sessions: {"key": {id}}` |
-| `data/videos-overrides-YEAR.yml` | by hand | corrections to the above |
-| `data/proceedings-YEAR.yml` | by hand | `"pid": DOI` |
-| `content/YEAR/extended_abstracts/<pid>_ext_abst.pdf` | by hand | extended abstracts |
-| `content/YEAR/sessions/slides/<pid>.pdf` | by hand | talk slides (older years: `QCrypt<YEAR>TalkSlides<NNN>…`) |
-| `content/YEAR/posters/<pid>.pdf` | by hand | poster PDFs |
+The homepage shows the first published issue in the list. Each issue exposes `/issues/<key>/papers.json` and `#paper-<pid>` anchors. Each article has its own URL at `/issues/<key>/<pid>/`. The site also publishes an article RSS feed, sitemap, structured metadata, and text indexes at `llms.txt` and `llms-full.txt`.
 
-Older years may still use `data/youtube-YEAR.json` and `videoId`/`videoIds`
-in session pages. Both still work.
+## Upstream features
 
-## From accepted papers to the schedule
+The [original theme](https://github.com/IAQI/conference-theme) supplies the HotCRP sanitizer, paper metadata, optional schedules, sessions, posters, slides, recordings, JSON and calendar exports, and edition archiving. The [program guide](CONFERENCE.md) documents those tools and their year-based file conventions. The [conference fixture](exampleSite/) exercises them independently. When using a schedule alongside a journal issue, use the same year for the issue key and the program data.
 
-Clone this repository next to the website (`~/Web/conference-theme`); the
-commands below are run from the website's root folder. Keep raw exports and
-registration lists in `private_data/` (git-ignored). They contain e-mail
-addresses and decisions about rejected papers, and the repositories are
-public.
+## Design and licensing
 
-### 1. Accepted papers and posters (after notification)
+The journal uses the Civic Digital Commons palette, light and dark reading surfaces, Inter, and the original Plan B mark. Brand assets come from [LuganoPlanB/branding](https://github.com/LuganoPlanB/branding/tree/ba333c6e21483e2606983bb733942812e0b35aad), with publishing and shell references from [ghost-theme](https://github.com/LuganoPlanB/ghost-theme) and [vite-theme](https://github.com/LuganoPlanB/vite-theme). See the [upstream code license](LICENSE) and the [Inter font license](assets/journal/OFL.txt).
 
-Export the accepted submissions from HotCRP as JSON (Search → select all →
-Download → JSON) and sanitize them:
+## Checks
 
 ```sh
-python3 ../conference-theme/scripts/sanitize_hotcrp_json.py private_data/hotcrp-talks.json \
-    --decision accept -o data/accepted-papers-2027.json
-# posters from a separate HotCRP instance: shift their ids first, so that ids never clash
-python3 ../conference-theme/scripts/adjust_pids.py private_data/hotcrp-posters.json private_data/posters-shifted.json --offset 1000
-python3 ../conference-theme/scripts/sanitize_hotcrp_json.py private_data/posters-shifted.json --decision accept -o data/posters-2027.json
-```
-
-Useful options: `--search-arxiv` looks up the arXiv id of each paper (slow:
-3 s per paper), `--talk-type-from-decision` sorts papers into long-plenary /
-plenary / talk (QIP), and `--keep KEY` publishes an extra field. Only the fields shown by
-`--list-kept-fields` (title, abstract, author names and affiliations, topics)
-are published; everything else in the export is dropped. If the export
-contains decisions, `--decision` (or `--all`) is required. Merged submissions (HotCRP tag
-`merge-108-377`) become `mergedwith`.
-
-The pages `{{< papers-accepted year=2027 >}}{{< /papers-accepted >}}` and
-`{{< posters-accepted year=2027 >}}{{< /posters-accepted >}}` show the lists right away.
-
-### 2. The program (once the PC has fixed the schedule)
-
-Keep the program in **one spreadsheet**, one row per slot (e.g. a shared
-Google Sheet that the PC chairs fill in), exported as `program/program-2027.csv`:
-
-| day | time | end | session | title | format | tags | location | chair | papers | speakers | note |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| 2027-08-23 | 09:00 | 10:15 | tutorial/Smith | | tutorial | | Room 140 | Jane Doe | | Smith | |
-| 2027-08-23 | 10:15 | 10:45 | | Coffee Break | break | break | Lobby | | | | |
-| 2027-08-23 | 10:45 | 12:15 | contributed/1a | Contributed talks 1a: QKD | contributed | | Room 140 | Ann Chair | 12 7 31 | | |
-| 2027-08-23 | 14:00 | 14:20 | | | contributed | | Room 140 | | 63 | | |
-
-- **session** names the page `content/YEAR/sessions/<session>.md`.
-  - If it is empty and the slot has one paper, it becomes `contributed/<pid>`
-    and the page takes the paper's title.
-  - Otherwise it becomes `stuff/<slug of title>`.
-  - A session that happens several times (coffee breaks) is one page used by
-    several rows.
-- **papers** and **speakers** are separated by spaces. Speaker keys are the
-  `key:` of the pages in `content/YEAR/speakers/`.
-- **location** is the room as displayed. Rooms get keys in
-  `data/locations-YEAR.yml`, where you can add a `description`.
-- **Parallel sessions** are simply rows with the same day and time; they are
-  shown side by side.
-
-```sh
-python3 ../conference-theme/scripts/generate_schedule.py --year 2027 --program program/program-2027.csv --check   # report only
-python3 ../conference-theme/scripts/generate_schedule.py --year 2027 --program program/program-2027.csv
-```
-
-The generator writes `data/schedule-2027.yml` and `data/locations-2027.yml`,
-and creates or updates the session pages. It reports paper ids that are not
-in the accepted list and accepted papers that are not scheduled.
-
-**Re-run it after every change to the spreadsheet; it is safe to repeat.**
-- **Session pages:** in pages that already exist, it only updates the keys
-  above, and only when the cell is not empty. Abstracts, biographies and other
-  text you added by hand stay.
-- **Schedule file:** edit the spreadsheet, not `schedule-2027.yml`, which is
-  rewritten every time.
-
-### 3. Presenters (once registration closes)
-
-Ask for the registration export with the questions *"Will you be presenting?"*
-(talk / poster / both / no) and *"Title of presentation"*, then:
-
-```sh
-python3 ../conference-theme/scripts/mark_presenters.py --year 2027 \
-    --registrations private_data/registrations.xlsx private_data/registrations-late.csv
-```
-
-- **Matching:** the script matches each declared title to an accepted paper,
-  then uses the person's name to pick the author. It writes
-  `data/presenters-2027.yml`.
-- **Unresolved rows** are listed for a human. Put decisions in
-  `data/presenters-overrides-2027.yml` (`"63": ["Joseph Carolan"]`); they
-  always win.
-- **Without registrations:** if the presenters are known otherwise, fill only
-  the overrides file and run the script without `--registrations`.
-- **Display:** presenters are shown in **bold** on paper lists and in
-  *italics* on schedule cards.
-
-**Alternatively, from [QuantumDB](https://quantumdb.iaqi.org).** IAQI's
-database of the three conferences records who presented each talk (CC0 data).
-Once a conference is entered there:
-
-```sh
-python3 ../conference-theme/scripts/quantumdb_presenters.py --venue qcrypt --year 2027
-```
-
-It matches QuantumDB's publications to the accepted papers by title, writes
-`data/presenters-2027.yml` with the names spelled as in your data, and also
-applies the overrides file. It reports publications it cannot match, and any
-recording whose YouTube id differs from `data/videos-2027.yml`. On TQC 2026
-its result agreed exactly with the registration-based one for the 125 papers
-both sources cover. Use one script or the other, since both write the same file.
-
-### 4. After the conference
-
-- **Videos.** Upload the recordings to YouTube in one or more playlists, then
-  run:
-
-  ```sh
-  python3 ../conference-theme/scripts/fetch_videos.py --year 2027 --playlist "https://www.youtube.com/playlist?list=..."
-  ```
-
-  - **Requirements and options:** it needs [yt-dlp](https://github.com/yt-dlp/yt-dlp).
-    Repeat `--playlist` for every playlist (QIP has one per track).
-  - **Matching:** it matches video titles against paper titles and session
-    titles. Prefixes like "Invited Talk:", "[QCrypt2025]" or "Speaker Name:"
-    are understood.
-  - **Corrections:** videos it cannot place are listed. Put corrections in
-    `data/videos-overrides-2027.yml`, for example `"26": {id: lZlPoEpRLF0}`,
-    or `"70": null` to drop a match.
-  - **Re-running:** run it again whenever more videos are uploaded.
-- **Slides:** `content/2027/sessions/slides/<pid>.pdf` (per paper) or
-  `presentation: /2027/...pdf` in a session page.
-- **Poster PDFs:** `content/2027/posters/<pid>.pdf`.
-- **Proceedings:** `data/proceedings-2027.yml` with `"pid": DOI`.
-- **Extended abstracts:** `content/2027/extended_abstracts/<pid>_ext_abst.pdf`.
-
-The links appear automatically on the schedule, the session pages and the
-accepted lists.
-
-## Using the module in a site
-
-In `hugo.toml` (no `theme =` line):
-
-```toml
-[module]
-  [[module.imports]]
-    path = "github.com/IAQI/conference-theme"
-```
-
-Then, once per site:
-
-```sh
-hugo mod init github.com/IAQI/<site>-website
-hugo mod get github.com/IAQI/conference-theme@main
-```
-
-Commit `go.mod` and `go.sum`: they pin the exact version of the module. Hugo
-downloads that version at build time, which needs [Go](https://go.dev/dl/):
-locally, and on Netlify via `GO_VERSION` under `[build.environment]` in
-`netlify.toml`. The same section sets `HUGO_VERSION` (at least the `min` in this
-module's `hugo.toml`, currently 0.170.0) and `DART_SASS_VERSION`, once for all
-build contexts.
-
-Each year's stylesheet `assets/style/theme-YEAR.scss` in the site:
-
-```scss
-@use "theme";
-:root { --primary: #ac191c; --primary-txt: #ffffff; }
-```
-
-and the site's `i18n/en.toml` names its charter and history pages
-(`footer_charter`, `footer_history`).
-
-- **Updating:** `go get github.com/IAQI/conference-theme@<commit>` (`hugo mod
-  get -u` fails while the module's own `go.mod` differs), then commit
-  `go.mod` and `go.sum`. A site only changes when its pin is updated.
-- **Local work on the module:** to preview changes to the module itself in a
-  site, run
-  `HUGO_MODULE_REPLACEMENTS="github.com/IAQI/conference-theme -> $HOME/Web/conference-theme" hugo server`.
-
-Optional site parameters (`[params]` in `hugo.toml`):
-
-| parameter | default | effect |
-|---|---|---|
-| `programFilePrefix` | `"IAQI"` | prefix of older slide files `<prefix><YEAR>TalkSlides<NNN>…` |
-| `programScheduleSpeakers` | `true` | show speaker photos on schedule cards |
-| `archiveUrl` | none | where earlier editions are archived (e.g. `https://qcrypt.iaqi.org`), listed in `/llms.txt` |
-| `organizer` | none | `{name, url}` of the organizing body, in the conference's JSON-LD |
-| `[params.YEAR.event]` | none | facts of an edition for search engines and AI agents: `name, startDate, endDate, timezone, venue, address, attendanceMode, status, registrationUrl` and `[[params.YEAR.event.deadlines]]` blocks `{label, date}`. See the guide, "Information for AI agents" |
-
-Outputs for AI agents and other programs (output formats defined in this
-module's `hugo.toml`; a site switches them on, since Hugo does not merge
-`[outputs]` from modules):
-
-| output | switched on by | content |
-|---|---|---|
-| `/robots.txt` | `enableRobotsTXT = true` (above the first `[table]` in `hugo.toml`) | allows everyone, points to the sitemap and `/llms.txt` |
-| `/llms.txt`, `/llms-full.txt` | `[outputs] home = ["html", "rss", "llms", "llmsfull"]` | site summary (https://llmstxt.org): current edition, pages from the year's menu, program data, other editions; the full version adds the text of the year's pages |
-| `/YEAR/schedule/program.json`, `papers.json`, `program.ics` | `outputs: [html, rss, programjson, papersjson, programics]` in `content/YEAR/schedule/_index.md` | the schedule with talks and papers, the accepted papers and posters, the schedule as a calendar; linked from the schedule page |
-| JSON-LD in every page's head | `[params.YEAR.event]` with `startDate` (conference); the schedule (sessions) | schema.org `Event` for the conference on the home pages, and for each session with its papers as `ScholarlyArticle` |
-
-## Tests
-
-```sh
+python3 -m pip install -r requirements.txt
 python3 -m unittest discover tests
+python3 -m unittest discover -s integration -v  # requires hugo and go on PATH
 ```
-
-The templates are checked by building [`exampleSite/`](exampleSite/)
-(`cd exampleSite && npm install && hugo`); GitHub Actions runs both on every
-pull request (`.github/workflows/check.yml`). Larger changes are also checked
-by building the three IAQI websites before and after and comparing the HTML.
