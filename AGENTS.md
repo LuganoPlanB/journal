@@ -1,9 +1,9 @@
-# AGENTS.md: journal-theme
+# AGENTS.md: journal
 
 This fork publishes the Plan-B Journal. Start with README.md and journalSite/.
 Use synthetic HotCRP exports for tests. Check the script suite, the publishing
 integration tests, and the inherited exampleSite fixture before proposing a change.
-Keep changes on a branch, open the pull request in LuganoPlanB/journal-theme,
+Keep changes on a branch, open the pull request in LuganoPlanB/journal,
 and leave merging to a maintainer.
 
 ## Upstream maintenance notes

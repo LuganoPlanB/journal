@@ -13,7 +13,7 @@ hugo server -D
 
 Open the local address printed by Hugo. The draft sample shows an issue, its table of contents, an article, and the issue’s JSON export. Run `hugo server` to preview published issues only. The starter builds with Hugo’s standard binary and Go.
 
-In `journalSite/hugo.toml`, set `baseURL` to the public journal URL (include any subdirectory and trailing slash). Set `params.hotcrpURL` to your public HotCRP submission URL to enable the submission links. Edit `content/authors.md` to supply author guidelines.
+In `journalSite/hugo.toml`, set `params.hotcrpURL` to your public HotCRP submission URL to enable the submission links. Edit `journalSite/content/authors.md` to supply author guidelines.
 
 ## Publish an issue
 
@@ -36,14 +36,7 @@ In `journalSite/hugo.toml`, set `baseURL` to the public journal URL (include any
 
    An optional `date` in `YYYY-MM-DD` format is displayed as the issue publication date. Articles appear in export order. HotCRP IDs are scoped to the issue, so two issues can have an article numbered 1.
 4. To publish a full-text PDF, put the editor-approved file in `assets/articles/vol-1-issue-1/<pid>.pdf`. For DOIs, add an optional `data/proceedings-vol-1-issue-1.yml` mapping quoted paper IDs to DOI strings. Imported arXiv IDs, related paper IDs and optional recordings become article links.
-5. Preview with `hugo server -D`. Set `draft: false` when the issue is ready. From `journalSite/`, build **into a fresh directory** and deploy its contents to the journal’s public web root:
-
-   ```sh
-   output=$(mktemp -d)
-   hugo --destination "$output"
-   ```
-
-   The result is a static site. Serve it alongside HotCRP with a separate document root or a dedicated URL path. Only the generated output belongs in the public web root.
+5. Preview with `hugo server -D`. Set `draft: false` when the issue is ready and merge the changes into `main`. After the checks pass, GitHub Actions builds the journal using the Pages URL and deploys `journalSite/public/`. View the [public journal](https://plan-b.foundation/journal/) or [check the deployment](https://github.com/LuganoPlanB/journal/actions/workflows/check.yml). To republish the same revision, choose **Run workflow** on `main`.
 
 The homepage shows the first published issue in the list. Each issue exposes `/issues/<key>/papers.json` and `#paper-<pid>` anchors. Each article has its own URL at `/issues/<key>/<pid>/`. The site also publishes an article RSS feed, sitemap, structured metadata, and text indexes at `llms.txt` and `llms-full.txt`.
 

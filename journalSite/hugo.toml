@@ -1,13 +1,13 @@
-baseURL = "https://example.org/"
+baseURL = "https://plan-b.foundation/journal/"
 title = "Plan-B Journal"
 locale = "en"
 enableRobotsTXT = true
 disableKinds = ["taxonomy", "term"]
 
 [module]
-  replacements = "github.com/LuganoPlanB/journal-theme -> ../.."
+  replacements = "github.com/LuganoPlanB/journal -> ../.."
   [[module.imports]]
-    path = "github.com/LuganoPlanB/journal-theme"
+    path = "github.com/LuganoPlanB/journal"
 
 [params]
   journal = true

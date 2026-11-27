@@ -11,9 +11,9 @@ enableRobotsTXT = true
   # Only for building this example inside the theme's repository: use the
   # theme from two folders up instead of downloading it. Delete this line in
   # your own site (it then uses the version pinned in go.mod).
-  replacements = "github.com/LuganoPlanB/journal-theme -> ../.."
+  replacements = "github.com/LuganoPlanB/journal -> ../.."
   [[module.imports]]
-    path = "github.com/LuganoPlanB/journal-theme"
+    path = "github.com/LuganoPlanB/journal"
 
 # The home page blocks contain HTML.
 [markup.goldmark.renderer]
