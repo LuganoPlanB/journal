@@ -2,7 +2,7 @@
 
 {{ site.Params.description }}
 {{ with site.GetPage "/issues" }}
-{{ range .Sections.ByWeight }}
+{{ range where .Sections.ByWeight "Params.example" "ne" true }}
 ## {{ .Title }}
 
 {{ .Permalink }}

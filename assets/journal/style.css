@@ -54,6 +54,13 @@ main p { max-width: 70ch; }
 .contents p, .byline span { color: var(--planb-color-text-soft); }
 .byline li { margin-block: .25rem; }
 .abstract { white-space: pre-line; }
+.example-note { padding: .65rem 1rem; border-inline-start: .25rem solid var(--planb-color-accent); background: var(--planb-color-panel-strong); }
+.section-directory { border-top: 2px solid var(--planb-color-accent-strong); padding-top: 1rem; }
+.directory-grid { list-style: none; padding: 0; display: grid; gap: 1.5rem 2.5rem; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); }
+.directory-grid li { border-top: var(--planb-border-strong); padding-top: 1rem; }
+.directory-grid h3, .directory-grid p { margin: 0 0 .5rem; }
+.journal-section table { width: min(100%, 70ch); margin-block: 1.5rem; border-collapse: collapse; }
+.journal-section :is(th, td) { text-align: start; vertical-align: top; border-bottom: var(--planb-border-strong); padding: .7rem .5rem; }
 .article-links { margin-top: 2rem; }
 .journal-footer { padding-block: 1.5rem 3rem; border-top: var(--planb-border-strong); font-size: .95rem; }
 @media (max-width: 580px) {

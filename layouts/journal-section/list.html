@@ -1,0 +1,10 @@
+{{ define "main" }}
+  {{ if not .Parent.IsHome }}<a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a>{{ end }}
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  <ul class="contents">
+    {{ range .Pages.ByWeight }}
+      <li><h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>{{ with .Description }}<p>{{ . }}</p>{{ end }}</li>
+    {{ end }}
+  </ul>
+{{ end }}

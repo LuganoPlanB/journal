@@ -2,6 +2,7 @@
 <article id="paper-{{ .Params.record.pid }}">
   <a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a>
   <h1>{{ .Title }}</h1>
+  {{ if .Params.example }}<p class="example-note">Layout preview · Fictional article</p>{{ end }}
   {{ with .Params.record.authors }}
     <ul class="byline">{{ range . }}<li>{{ .name }}{{ with .affiliation }} <span>({{ . }})</span>{{ end }}</li>{{ end }}</ul>
   {{ end }}
@@ -24,5 +25,9 @@
       {{ with $.Parent.GetPage (string .) }}<a href="{{ .RelPermalink }}">Related article · {{ .Title }}</a>{{ end }}
     {{ end }}
   </div>
+  {{ if .Params.example }}
+    <h2>Article resources</h2>
+    <p>A published article can link to its DOI, arXiv preprint, extended abstract, slides and recording here.</p>
+  {{ end }}
 </article>
 {{ end }}

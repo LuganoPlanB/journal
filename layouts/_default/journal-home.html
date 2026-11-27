@@ -1,13 +1,24 @@
 {{ define "main" }}
   <div class="masthead"><h1>{{ site.Title }}</h1>{{ .Content }}</div>
   {{ with site.GetPage "/issues" }}
-    {{ range first 1 .Sections.ByWeight }}
-      <section aria-labelledby="current-issue"><p class="kicker">Current issue</p>
+    {{ $issues := where .Sections.ByWeight "Params.example" "ne" true }}
+    {{ if not $issues }}{{ $issues = .Sections.ByWeight }}{{ end }}
+    {{ range first 1 $issues }}
+      <section aria-labelledby="current-issue"><p class="kicker">{{ if .Params.example }}Issue preview{{ else }}Current issue{{ end }}</p>
         <h2 id="current-issue"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        {{ if .Params.example }}<p>Explore a fictional issue while the first edition is in preparation.</p>{{ end }}
         {{ partial "journal/contents.html" . }}
       </section>
     {{ else }}
       <section><h2>Issues</h2><p>The first issue will appear here when it is published.</p></section>
     {{ end }}
   {{ end }}
+  <section class="section-directory" aria-labelledby="explore">
+    <h2 id="explore">Explore the journal</h2>
+    <ul class="directory-grid">
+      {{ range site.Menus.main }}{{ with .Page }}
+        <li><h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3><p>{{ .Description }}</p></li>
+      {{ end }}{{ end }}
+    </ul>
+  </section>
 {{ end }}

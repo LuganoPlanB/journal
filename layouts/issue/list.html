@@ -1,6 +1,7 @@
 {{ define "main" }}
   <a href="{{ .Parent.RelPermalink }}">All issues</a>
   <h1>{{ .Title }}</h1>
+  {{ if .Params.example }}<p class="example-note">Layout preview · The articles and bylines in this issue are fictional.</p>{{ end }}
   {{ if not .Date.IsZero }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2 January 2006" }}</time>{{ end }}
   {{ .Content }}
   {{ partial "journal/contents.html" . }}

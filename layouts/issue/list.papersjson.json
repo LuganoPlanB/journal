@@ -2,4 +2,6 @@
 {{- range .RegularPages.ByWeight -}}
   {{- $articles = $articles | append (merge .Params.record (dict "url" .Permalink)) -}}
 {{- end -}}
-{{- dict "journal" site.Title "issue" .Title "articles" $articles | jsonify -}}
+{{- $issue := dict "journal" site.Title "issue" .Title "articles" $articles -}}
+{{- if .Params.example }}{{ $issue = merge $issue (dict "example" true) }}{{ end -}}
+{{- $issue | jsonify -}}

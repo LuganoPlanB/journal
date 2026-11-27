@@ -11,7 +11,8 @@
   {{ $css := slice (resources.Get "journal/tokens.css") (resources.Get "journal/style.css") | resources.Concat "journal/site.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
   {{ $schema := dict "@context" "https://schema.org" "@type" "Periodical" "name" site.Title "url" site.Home.Permalink }}
-  {{ if eq .Type "article" }}
+  {{ if .Params.example }}<meta name="robots" content="noindex">{{ end }}
+  {{ if and (eq .Type "article") (not .Params.example) }}
     {{ $authors := slice }}
     {{ range .Params.record.authors }}{{ $authors = $authors | append (dict "@type" "Person" "name" .name) }}{{ end }}
     {{ $schema = dict "@context" "https://schema.org" "@type" "ScholarlyArticle" "headline" .Title "url" .Permalink "isPartOf" $schema "author" $authors }}

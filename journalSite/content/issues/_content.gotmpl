@@ -2,7 +2,8 @@
 {{ range $index, $issue := hugo.Data.issues }}
   {{ $key := string $issue.key }}
   {{ $draft := $issue.draft | default false }}
-  {{ $issuePage := dict "path" $key "kind" "section" "type" "issue" "title" $issue.title "weight" (add $index 1) "draft" $draft "outputs" (slice "html" "papersjson") }}
+  {{ $example := $issue.example | default false }}
+  {{ $issuePage := dict "path" $key "kind" "section" "type" "issue" "title" $issue.title "weight" (add $index 1) "draft" $draft "params" (dict "example" $example) "outputs" (slice "html" "papersjson") }}
   {{ with $issue.date }}{{ $issuePage = merge $issuePage (dict "date" .) }}{{ end }}
   {{ $.AddPage $issuePage }}
   {{ range $order, $paper := index hugo.Data (printf "accepted-papers-%s" $key) }}
@@ -11,7 +12,7 @@
     {{ with index (index hugo.Data (printf "proceedings-%s" $key) | default dict) $pid }}
       {{ $record = merge $record (dict "doi" .) }}
     {{ end }}
-    {{ $params := dict "record" $record "issueKey" $key }}
+    {{ $params := dict "record" $record "issueKey" $key "example" $example }}
     {{ $page := dict "path" (printf "%s/%s" $key $pid) "type" "article" "title" $paper.title "description" ($paper.abstract | default "") "params" $params "weight" (add $order 1) "draft" $draft }}
     {{ with $issue.date }}{{ $page = merge $page (dict "date" .) }}{{ end }}
     {{ $.AddPage $page }}
