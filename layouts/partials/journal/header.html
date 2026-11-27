@@ -4,11 +4,10 @@
     <a class="brand" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }} home">
       <img src="{{ (resources.Get "journal/lugano_planb_2026_logo_square_color.svg").RelPermalink }}" alt="Lugano Plan B" width="126" height="44">
     </a>
-    <nav aria-label="Journal">
-      {{ range site.Menus.main }}
-        <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ end }}>{{ .Name }}</a>
-      {{ end }}
-      {{ with site.Params.hotcrpURL }}<a class="submit" href="{{ . }}">Submit a manuscript</a>{{ end }}
-    </nav>
+    <nav class="desktop-nav" aria-label="Journal">{{ partial "journal/menu.html" . }}</nav>
+    <details class="mobile-nav">
+      <summary>Menu</summary>
+      <nav aria-label="Journal">{{ partial "journal/menu.html" . }}</nav>
+    </details>
   </div>
 </header>

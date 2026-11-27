@@ -1,0 +1,4 @@
+{{ range site.Menus.main }}
+  <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . }} aria-current="page"{{ else if and .Page (.Page.IsAncestor $) }} aria-current="location"{{ end }}>{{ .Name }}</a>
+{{ end }}
+{{ with site.Params.hotcrpURL }}<a class="submit" href="{{ . }}">Submit a manuscript</a>{{ end }}

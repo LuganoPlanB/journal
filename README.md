@@ -48,6 +48,8 @@ The [original theme](https://github.com/IAQI/conference-theme) supplies the HotC
 
 ## Design and licensing
 
+The homepage photograph of Lake Lugano and Monte Brè comes from the [Vite theme’s image collection](https://github.com/LuganoPlanB/vite-theme/blob/78ef033/src/theme/assets/heroes/lago_e_bre.jpg). Hugo generates two JPEG sizes for the journal layout.
+
 The journal uses the Civic Digital Commons palette, light and dark reading surfaces, Inter, and the original Plan B mark. Brand assets come from [LuganoPlanB/branding](https://github.com/LuganoPlanB/branding/tree/ba333c6e21483e2606983bb733942812e0b35aad), with publishing and shell references from [ghost-theme](https://github.com/LuganoPlanB/ghost-theme) and [vite-theme](https://github.com/LuganoPlanB/vite-theme). See the [upstream code license](LICENSE) and the [Inter font license](assets/journal/OFL.txt).
 
 ## Checks
