@@ -8,7 +8,7 @@
   {{ $font := resources.Get "journal/inter-latin.woff2" }}
   {{ (resources.Get "journal/OFL.txt").Publish }}
   <link rel="preload" href="{{ $font.RelPermalink }}" as="font" type="font/woff2" crossorigin>
-  {{ $css := slice (resources.Get "journal/tokens.css") (resources.Get "journal/style.css") | resources.Concat "journal/site.css" | minify | fingerprint }}
+  {{ $css := slice (resources.Get "journal/tokens.css") (resources.Get "journal/layout.css") (resources.Get "journal/style.css") | resources.Concat "journal/site.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $css.RelPermalink }}">
   {{ $schema := dict "@context" "https://schema.org" "@type" "Periodical" "name" site.Title "url" site.Home.Permalink }}
   {{ if .Params.example }}<meta name="robots" content="noindex">{{ end }}
