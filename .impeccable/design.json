@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-28T06:54:01Z",
+  "title": "Design System: Plan-B Journal",
+  "extensions": {
+    "breakpoints": [
+      { "name": "Mobile navigation and two-column directory", "value": "900px" },
+      { "name": "Stacked masthead and topics", "value": "700px" },
+      { "name": "Single-column directory", "value": "520px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary journal action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main link on the cover or an article with a full-text PDF.",
+      "html": "<a class=\"submit\" href=\"#call-for-papers\">Call for Papers</a>",
+      "css": ".submit { box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 12px 22px; border-radius: 999px; background: var(--planb-color-accent-strong, #082952); color: var(--planb-color-canvas, #fffefa); font: 700 1.0625rem/1.6 Inter, 'Segoe UI', Arial, sans-serif; text-decoration: none; } .submit:hover { text-decoration: underline; } .submit:focus-visible { outline: 3px solid #7468ff; outline-offset: 3px; }"
+    }
+  ]
+}
