@@ -124,7 +124,7 @@ main > a:first-child, main > article > a:first-child {
   .brand { position: absolute; inset: .65rem auto auto 0; }
   .mobile-nav { display: block; }
   .mobile-nav summary {
-    width: fit-content; margin-left: auto; gap: .75rem; padding-inline: 1rem; list-style: none;
+    display: flex; width: fit-content; margin-inline-start: auto; gap: .75rem; padding-inline: 1rem; list-style: none;
     border-radius: var(--planb-radius-pill); border: 1px solid #b0d3f1; cursor: pointer;
   }
   .mobile-nav summary::-webkit-details-marker { display: none; }
