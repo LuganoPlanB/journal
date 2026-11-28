@@ -73,16 +73,14 @@ main > a:first-child, main > article > a:first-child {
   display: block; width: 100%; height: 100%; min-height: 0; object-fit: cover;
   border-radius: 0 var(--planb-radius-panel) var(--planb-radius-panel) 0;
 }
-.issue-feature {
+.topics-feature {
   display: grid; grid-template-columns: 1fr 1.6fr; gap: clamp(2rem, 6vw, 5rem);
   margin-block: clamp(2.25rem, 5vw, var(--planb-space-section));
 }
-.issue-heading p { max-width: 32ch; color: var(--planb-color-text-soft); }
-.issue-heading h2 a { text-decoration-thickness: .055em; }
-.kicker { font-weight: 700; font-size: .95rem; }
+.topic-briefs h3 { border-top: var(--planb-border-strong); padding-top: 1rem; }
+.topic-briefs p { color: var(--planb-color-text-soft); }
 .contents, .byline, .directory-grid { list-style: none; padding: 0; }
 .contents { margin: 1.75rem 0; border-block: var(--planb-border-strong); }
-.issue-feature .contents { margin: 0; }
 .contents li { padding: .9rem 0 1.1rem; }
 .contents li + li { border-top: var(--planb-border-soft); }
 .contents :is(h2, h3, p) { margin: 0; }
@@ -134,12 +132,11 @@ main > a:first-child, main > article > a:first-child {
   .directory-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 700px) {
-  .masthead, .issue-feature { grid-template-columns: 1fr; }
+  .masthead, .topics-feature { grid-template-columns: 1fr; }
   .masthead-copy { padding: clamp(1.35rem, 6vw, 2.5rem); }
   .masthead h1 { max-width: none; }
   .masthead-photo { height: auto; aspect-ratio: 2.4; border-radius: 0 0 var(--planb-radius-panel) var(--planb-radius-panel); }
-  .issue-feature { gap: .5rem; }
-  .issue-heading p { max-width: 48ch; }
+  .topics-feature { gap: .5rem; }
   .journal-section :is(th, td) { padding: .65rem .4rem; }
 }
 @media (max-width: 520px) {

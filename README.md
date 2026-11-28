@@ -11,9 +11,9 @@ cd journalSite
 hugo server -D
 ```
 
-Open the local address printed by Hugo. The public sample issue shows a table of contents, two fictional articles, a sample PDF and the issue’s JSON export. Its `example: true` flag labels the preview and excludes its articles from the publication feed and text indexes. Real issues take precedence on the homepage. Set `draft: true` on any issue to restrict it to a local `hugo server -D` build.
+Open the local address printed by Hugo. The public sample issue shows a table of contents, two fictional articles, a sample PDF and the issue’s JSON export. Its `example: true` flag labels the preview and excludes its articles from the publication feed and text indexes. Set `draft: true` on any issue to restrict it to a local `hugo server -D` build.
 
-The homepage links to the editorial board, contributor and partner directories, journal club schedule, posters and materials, news, and information about the journal. Replace the labeled placeholders in `journalSite/content/{people,journal-club,news,about}/` as editorial content becomes available. Remove the sample issue entry from `data/issues.yaml` to retire the public issue preview.
+To edit Topics, open [the homepage Markdown](journalSite/content/_index.md). Use a `###` heading and a short paragraph for each topic. Rearrange the entries to change their display order. The hero introduction is in the same file’s `description` field. Edit the [Call for Papers page](journalSite/content/call-for-papers.md) to publish submission details.
 
 In `journalSite/hugo.toml`, set `params.hotcrpURL` to your public HotCRP submission URL to enable the submission links. Edit `journalSite/content/authors.md` to supply author guidelines.
 
@@ -40,7 +40,7 @@ In `journalSite/hugo.toml`, set `params.hotcrpURL` to your public HotCRP submiss
 4. To publish a full-text PDF, put the editor-approved file in `assets/articles/vol-1-issue-1/<pid>.pdf`. For DOIs, add an optional `data/proceedings-vol-1-issue-1.yml` mapping quoted paper IDs to DOI strings. Imported arXiv IDs, related paper IDs and optional recordings become article links.
 5. Preview with `hugo server -D`. Set `draft: false` when the issue is ready and merge the changes into `main`. After the checks pass, GitHub Actions builds the journal using the Pages URL and deploys `journalSite/public/`. View the [public journal](https://plan-b.foundation/journal/) or [check the deployment](https://github.com/LuganoPlanB/journal/actions/workflows/check.yml). To republish the same revision, choose **Run workflow** on `main`.
 
-The homepage shows the first published issue in the list. Each issue exposes `/issues/<key>/papers.json` and `#paper-<pid>` anchors. Each article has its own URL at `/issues/<key>/<pid>/`. The site also publishes an article RSS feed, sitemap, structured metadata, and text indexes at `llms.txt` and `llms-full.txt`.
+The Call for Papers page links to the issue archive. Each issue exposes `/issues/<key>/papers.json` and `#paper-<pid>` anchors. Each article has its own URL at `/issues/<key>/<pid>/`. The site also publishes an article RSS feed, sitemap, structured metadata, and text indexes at `llms.txt` and `llms-full.txt`.
 
 ## Upstream features
 

@@ -2,8 +2,8 @@
   <div class="masthead">
     <div class="masthead-copy">
       <h1>{{ site.Title }}</h1>
-      {{ .Content }}
-      {{ with site.GetPage "/issues" }}<a class="submit" href="{{ .RelPermalink }}">Browse issues</a>{{ end }}
+      {{ with .Description }}<p>{{ . }}</p>{{ end }}
+      {{ with site.GetPage "/call-for-papers" }}<a class="submit" href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}
     </div>
     {{ with resources.Get "journal/lago_e_bre.jpg" }}
       {{ $small := .Resize "640x jpg q80" }}
@@ -14,22 +14,10 @@
            width="{{ $large.Width }}" height="{{ $large.Height }}" fetchpriority="high">
     {{ end }}
   </div>
-  {{ with site.GetPage "/issues" }}
-    {{ $issues := where .Sections.ByWeight "Params.example" "ne" true }}
-    {{ if not $issues }}{{ $issues = .Sections.ByWeight }}{{ end }}
-    {{ range first 1 $issues }}
-      <section class="issue-feature" aria-labelledby="current-issue">
-        <div class="issue-heading">
-        {{ if not .Params.example }}<p class="kicker">Current issue</p>{{ end }}
-        <h2 id="current-issue"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-        {{ if .Params.example }}<p>Explore a fictional issue while the first edition is in preparation.</p>{{ end }}
-        </div>
-        {{ partial "journal/contents.html" . }}
-      </section>
-    {{ else }}
-      <section><h2>Issues</h2><p>The first issue will appear here when it is published.</p></section>
-    {{ end }}
-  {{ end }}
+  <section class="topics-feature" aria-labelledby="topics">
+    <h2 id="topics">Topics</h2>
+    <div class="topic-briefs">{{ .Content }}</div>
+  </section>
   <section class="section-directory" aria-labelledby="explore">
     <h2 id="explore">Explore the journal</h2>
     <ul class="directory-grid">
