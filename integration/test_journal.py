@@ -38,7 +38,7 @@ class JournalPublishing(unittest.TestCase):
         self.assertIn('id="paper-1"', (preview / "issues/sample/index.html").read_text())
         live = self.build("live")
         self.assertFalse((live / "issues/sample").exists())
-        self.assertIn("first issue", (live / "index.html").read_text())
+        self.assertIn("first issue", (live / "issues/index.html").read_text())
         self.assertNotIn("Open HotCRP", (live / "authors/index.html").read_text())
         for file in ["index.xml", "llms.txt", "llms-full.txt", "sitemap.xml"]:
             self.assertNotIn("/sample/", (live / file).read_text())
@@ -46,7 +46,8 @@ class JournalPublishing(unittest.TestCase):
     def test_public_layout_examples(self):
         live = self.build("examples")
         pages = {
-            "": ["issues/sample/", "authors/", "people/", "journal-club/", "news/", "about/"],
+            "": ["call-for-papers/", "authors/", "people/", "news/", "about/"],
+            "call-for-papers/": ["authors/", "issues/"],
             "issues/": ["issues/sample/"],
             "issues/sample/": ["issues/sample/1/", "issues/sample/2/", "issues/sample/papers.json"],
             "issues/sample/1/": ["articles/sample/1.pdf"],
@@ -97,7 +98,11 @@ class JournalPublishing(unittest.TestCase):
         config.write_text(config.read_text().replace("# hotcrpURL", "hotcrpURL"))
         live = self.build("live")
         home = (live / "index.html").read_text()
-        self.assertIn('href="/journal/issues/vol1/1/"', home)
+        self.assertIn('>Topics</h2>', home)
+        self.assertIn('>Call for Papers</a>', home)
+        self.assertIn('>Committee</a>', home)
+        self.assertNotIn('href="/journal/journal-club/', home)
+        self.assertNotIn('href="/journal/issues/vol1/1/"', home)
         self.assertNotIn("Documenting a civic", home)
         self.assertIn('href="https://your-submission-server.example/"', home)
         article = (live / "issues/vol1/1/index.html").read_text()

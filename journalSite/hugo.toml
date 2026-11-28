@@ -18,21 +18,17 @@ disableKinds = ["taxonomy", "term"]
   home = ["html", "rss", "llms", "llmsfull"]
 
 [[menus.main]]
-  name = "Issues"
-  pageRef = "/issues"
+  name = "Call for Papers"
+  pageRef = "/call-for-papers"
   weight = 10
 [[menus.main]]
   name = "For authors"
   pageRef = "/authors"
   weight = 20
 [[menus.main]]
-  name = "People"
+  name = "Committee"
   pageRef = "/people"
   weight = 30
-[[menus.main]]
-  name = "Journal club"
-  pageRef = "/journal-club"
-  weight = 40
 [[menus.main]]
   name = "News"
   pageRef = "/news"

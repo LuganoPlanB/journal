@@ -1,5 +1,5 @@
 ---
-title: People
+title: Committee
 description: Editorial board, contributors and supporting organizations.
 type: journal-section
 cascade:
